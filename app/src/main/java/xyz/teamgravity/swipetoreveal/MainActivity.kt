@@ -8,7 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Email
@@ -41,23 +41,21 @@ class MainActivity : ComponentActivity() {
                             .fillMaxSize()
                             .padding(padding)
                     ) {
-                        itemsIndexed(
+                        items(
                             items = contacts,
-                            key = { _, contact ->
-                                contact.id
-                            }
-                        ) { index, contact ->
+                            key = { it.id }
+                        ) { contact ->
                             SwipeToRevealItem(
                                 revealed = contact.revealed,
                                 onExpanded = {
                                     contacts = contacts.changeRevealed(
-                                        index = index,
+                                        id = contact.id,
                                         revealed = true
                                     )
                                 },
                                 onCollapsed = {
                                     contacts = contacts.changeRevealed(
-                                        index = index,
+                                        id = contact.id,
                                         revealed = false
                                     )
                                 },
@@ -65,7 +63,7 @@ class MainActivity : ComponentActivity() {
                                     ActionButton(
                                         onClick = {
                                             Toast.makeText(this@MainActivity, "Contact ${contact.name} was deleted.", Toast.LENGTH_SHORT).show()
-                                            contacts = contacts.remove(index)
+                                            contacts = contacts.remove(contact.id)
                                         },
                                         color = Color.Red,
                                         icon = Icons.Default.Delete
@@ -73,7 +71,7 @@ class MainActivity : ComponentActivity() {
                                     ActionButton(
                                         onClick = {
                                             contacts = contacts.changeRevealed(
-                                                index = index,
+                                                id = contact.id,
                                                 revealed = false
                                             )
                                             Toast.makeText(this@MainActivity, "Contact ${contact.name} was sent an email.", Toast.LENGTH_SHORT).show()
@@ -84,7 +82,7 @@ class MainActivity : ComponentActivity() {
                                     ActionButton(
                                         onClick = {
                                             contacts = contacts.changeRevealed(
-                                                index = index,
+                                                id = contact.id,
                                                 revealed = false
                                             )
                                             Toast.makeText(this@MainActivity, "Contact ${contact.name} was shared", Toast.LENGTH_SHORT).show()
